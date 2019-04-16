@@ -158,7 +158,7 @@ class ReactComp extends Component {
     let reservations = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].day.clone();
-      if(this.props.disableDayScrolling) {
+      if(!this.props.disableDayScrolling) {
         while (iterator.getTime() < props.selectedDay.getTime()) {
           const res = this.getReservationsForDay(iterator, props);
           if (!res) {
@@ -173,7 +173,7 @@ class ReactComp extends Component {
     }
     const scrollPosition = reservations.length;
     const iterator = props.selectedDay.clone();
-    if(this.props.disableDayScrolling) {
+    if(!this.props.disableDayScrolling) {
       for (let i = 0; i < 31; i++) {
         const res = this.getReservationsForDay(iterator, props);
         if (res) {
@@ -199,7 +199,7 @@ class ReactComp extends Component {
         contentContainerStyle={this.styles.content}
         renderItem={this.renderRow.bind(this)}
         data={this.state.reservations}
-        onScroll={this.props.disableDayScrolling && this.onScroll.bind(this)}
+        onScroll={!this.props.disableDayScrolling && this.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
