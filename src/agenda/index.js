@@ -89,6 +89,8 @@ export default class AgendaView extends Component {
     refreshing: PropTypes.bool,
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+    // Disable scrolling between days
+    disableDayScrolling: PropTypes.bool,
   };
 
   constructor(props) {
@@ -285,6 +287,7 @@ export default class AgendaView extends Component {
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
         renderEmptyData={this.props.renderEmptyData}
+        disableDayScrolling={this.props.disableDayScrolling}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
         onScroll={() => {}}

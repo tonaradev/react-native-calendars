@@ -35,6 +35,8 @@ class ReactComp extends Component {
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
+    // Disable scrolling between days
+    disableDayScrolling: PropTypes.bool,
   };
 
   constructor(props) {
@@ -156,27 +158,30 @@ class ReactComp extends Component {
     let reservations = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].day.clone();
-      while (iterator.getTime() < props.selectedDay.getTime()) {
-        const res = this.getReservationsForDay(iterator, props);
-        if (!res) {
-          reservations = [];
-          break;
-        } else {
-          reservations = reservations.concat(res);
+      if(this.props.disableDayScrolling) {
+        while (iterator.getTime() < props.selectedDay.getTime()) {
+          const res = this.getReservationsForDay(iterator, props);
+          if (!res) {
+            reservations = [];
+            break;
+          } else {
+            reservations = reservations.concat(res);
+          }
+          iterator.addDays(1);
         }
-        iterator.addDays(1);
       }
     }
     const scrollPosition = reservations.length;
     const iterator = props.selectedDay.clone();
-    for (let i = 0; i < 31; i++) {
-      const res = this.getReservationsForDay(iterator, props);
-      if (res) {
-        reservations = reservations.concat(res);
+    if(this.props.disableDayScrolling) {
+      for (let i = 0; i < 31; i++) {
+        const res = this.getReservationsForDay(iterator, props);
+        if (res) {
+            reservations = reservations.concat(res);
+        }
+        iterator.addDays(1);
       }
-      iterator.addDays(1);
     }
-
     return {reservations, scrollPosition};
   }
 
